@@ -113,7 +113,7 @@ class _LoginFormState extends State<LoginForm> implements changePasswordInterfac
                   if (kIsWeb) {
                     _launchURL();
                   } else {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) =>
                             PrivacyPolicyScreen()));
                   }
@@ -143,7 +143,7 @@ class _LoginFormState extends State<LoginForm> implements changePasswordInterfac
             ),
           ),
           const SizedBox(height: defaultPadding),
-          Hero(
+          /*Hero(
             tag: "forgot_password",
             child: ElevatedButton(
               onPressed: () {
@@ -153,7 +153,7 @@ class _LoginFormState extends State<LoginForm> implements changePasswordInterfac
                 "Forgot Password".toUpperCase(),
               ),
             ),
-          ),
+          ),*/
           // AlreadyHaveAnAccountCheck(
           //   press: () {
           //     Navigator.push(
@@ -266,10 +266,13 @@ class _LoginFormState extends State<LoginForm> implements changePasswordInterfac
           }
 
         } else {
+          Utility.showMessage(context, "Invalid User Name and Password");
           print("null value");
         }
       });
     } else {
+      userNameController.text='';
+      userPasswordController.text='';
       Utility.showMessage(context, "Invalid User Name and Password");
     }
   }

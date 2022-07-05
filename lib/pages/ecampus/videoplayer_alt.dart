@@ -4,15 +4,15 @@ import 'package:video_player/video_player.dart';
 
 import '../../../widget/file_list_button.dart';
 
-class VideoApp extends StatefulWidget {
+class VideoApp1 extends StatefulWidget {
   @override
   final FileDetail fileDetails;
 
-  const VideoApp({Key? key, required this.fileDetails}) : super(key: key);
+  const VideoApp1({Key? key, required this.fileDetails}) : super(key: key);
   _VideoAppState createState() => _VideoAppState();
 }
 
-class _VideoAppState extends State<VideoApp> {
+class _VideoAppState extends State<VideoApp1> {
   late VideoPlayerController _controller;
 
   @override
@@ -34,6 +34,10 @@ class _VideoAppState extends State<VideoApp> {
         setState(() {});
 
       });
+    _controller.addListener(() {
+      setState(() {});
+    });
+
   }
 
 
@@ -56,13 +60,17 @@ class _VideoAppState extends State<VideoApp> {
           backgroundColor: Colors.blue.withOpacity(0.3), //You can make this transparent
           elevation: 0.0, //No shadow
         ),
-        body: Center(
+    body: Center(
           child: _controller.value.isInitialized
               ? AspectRatio(
                   aspectRatio: _controller.value.aspectRatio,
                   child: VideoPlayer(_controller),
                 )
-              : Container(),
+              : Container(
+            child: _PlayPauseOverlay(controller: _controller,),
+          ),
+
+          //VideoProgressIndicator(_controller, allowScrubbing: true),
 
         ),
         floatingActionButton: FloatingActionButton(
@@ -93,4 +101,39 @@ class _VideoAppState extends State<VideoApp> {
 
   }
 
+}
+
+class _PlayPauseOverlay extends StatelessWidget {
+  const _PlayPauseOverlay({Key? key, required this.controller}) : super(key: key);
+
+  final VideoPlayerController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        AnimatedSwitcher(
+          duration: Duration(milliseconds: 50),
+          reverseDuration: Duration(milliseconds: 200),
+          child: controller.value.isPlaying
+              ? SizedBox.shrink()
+              : Container(
+            color: Colors.black26,
+            child: Center(
+              child: Icon(
+                Icons.play_arrow,
+                color: Colors.white,
+                size: 100.0,
+              ),
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            controller.play();
+          },
+        ),
+      ],
+    );
+  }
 }

@@ -30,10 +30,11 @@ void main() async {
     await Firebase.initializeApp();
     print('-- main: Firebase.initializeApp');
   }
+  initFirebase();
   runApp(const MyApp());
 }
 
-Future<void> main123W() async {
+Future<void> initFirebase() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
@@ -67,7 +68,7 @@ Future<void> main123W() async {
     );
   }
   getToken();
-  runApp(MyApp());
+  //runApp(MyApp());
 }
 
 late String token;
@@ -86,7 +87,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Kidzee App',
       theme: ThemeData(
-          primaryColor: kPrimaryColor,
+          primaryColor: kPrimaryLightColor,
           scaffoldBackgroundColor: Colors.white,
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
@@ -99,7 +100,7 @@ class MyApp extends StatelessWidget {
           ),
           inputDecorationTheme: const InputDecorationTheme(
             filled: true,
-            fillColor: kPrimaryLightColor,
+            fillColor: kPrimaryTEXTBGColor,
             iconColor: kPrimaryColor,
             prefixIconColor: kPrimaryColor,
             contentPadding: EdgeInsets.symmetric(

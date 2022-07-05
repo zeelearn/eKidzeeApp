@@ -90,7 +90,7 @@ class _IntroPageState extends State<IntroPage> {
                 primary: Colors.white, // foreground
               ),
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                 );

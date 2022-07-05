@@ -12,7 +12,6 @@ class LoginScreenTopImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-
         Row(
           children: [
             const Spacer(),

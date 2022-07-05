@@ -44,11 +44,12 @@ class _SplashScreenState extends State<SplashScreen> {
       displayName = prefs.getString(LocalConstant.KEY_DISPLAY_NAME) as String;
     }
       print("-------${displayName}");
-      if(prefs.getString(LocalConstant.KEY_USER_ID)=='') {
+      if(false && displayName != '') {
+        print('home');
         Timer(
             Duration(seconds: 4),
                 () =>
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
@@ -57,6 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
                               title: displayName)),
                 ));
       }else {
+        print(' in else');
         if (kIsWeb) {
           Timer(
               Duration(seconds: 4),
@@ -65,6 +67,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       builder: (BuildContext context) => LoginScreen())));
         } else {
           //IntroPage
+          print('intro');
           Timer(
               Duration(seconds: 4),
                   () =>

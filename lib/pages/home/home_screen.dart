@@ -4,6 +4,7 @@ import 'package:ekidzee/helper/LocalConstant.dart';
 import 'package:ekidzee/model/ActivityPlanerModel.dart';
 import 'package:ekidzee/pages/about/about_screen.dart';
 import 'package:ekidzee/pages/ecampus/CloudScreen.dart';
+import 'package:ekidzee/pages/notification/UserNotification.dart';
 import 'package:ekidzee/pages/userinfo/MyInfoScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../constants.dart';
 import '../../model/PushNotification.dart';
 import '../../ui/KidzeeAppTheme.dart';
 import '../../widget/HomeAppBarDesign.dart';
@@ -30,6 +32,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   int _selectedDestination = 0;
   late String mTitle = "", mClassName = "";
   AnimationController? animationController;
@@ -132,6 +136,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
          return false;
       },
       child: Scaffold(
+        key: _scaffoldKey,
         // appBar: AppBar(
         //   title: KidzeeWidget().getAppBarUI(context),
         // ),
@@ -139,6 +144,119 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         drawer: getNavigationalDrawar(),
         body: getScreen(),
       ),
+    );
+  }
+
+  Widget getAppbar(){
+    return AppBar(
+      backgroundColor: kPrimaryLightColor,
+      centerTitle: true,
+      title: const Text(
+        'Kidzee',
+        style:
+        TextStyle(fontSize: 17, color: Colors.white, letterSpacing: 0.53),
+      ),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(20),
+        ),
+      ),
+      leading: InkWell(
+        onTap: () {
+          _scaffoldKey.currentState?.openDrawer();
+        },
+        child: const Icon(
+          Icons.subject,
+          color: Colors.white,
+        ),
+      ),
+      actions: [
+        InkWell(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => UserNotification()));
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.notifications,
+              size: 20,
+            ),
+          ),
+        ),
+      ],
+      bottom: PreferredSize(
+          child: getAppBottomView(),
+          preferredSize: Size.fromHeight(80.0)),
+    );
+  }
+
+  Widget getAppBottomView() {
+    return Container(
+      padding: EdgeInsets.only(left: 30, bottom: 20),
+      child: Row(
+        children: [
+          getProfileView(),
+          Container(
+            margin: EdgeInsets.only(left: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  'Hubert Wong',
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
+                ),
+                Text(
+                  'hubert.wong@mail.com',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  '+1 1254 251 241',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+
+  Widget getProfileView(){
+    return Stack(
+      children: [
+        const CircleAvatar(
+          radius: 32,
+          backgroundColor: Colors.white,
+          child: Icon(Icons.person_outline_rounded),
+        ),
+        Positioned(
+            bottom: 1,
+            right: 1,
+            child: Container(
+              height: 30,
+              width: 30,
+              decoration: const BoxDecoration(
+                  color: Colors.amber,
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              child: const Icon(
+                Icons.edit,
+                color: kPrimaryLightColor,
+                size: 20,
+              ),
+            )
+        )
+      ],
     );
   }
 
@@ -203,7 +321,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             title: Text('e-Campus'),
             selected: _selectedDestination == 2,
             onTap: () => selectDestination(2),
-          ),
+          )/*,
           ListTile(
             leading: Icon(Icons.delete),
             title: Text('Rhymes and AV\s'),
@@ -255,7 +373,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             title: Text('Socual Media'),
             selected: _selectedDestination == 8,
             onTap: () => selectDestination(8),
-          ),ListTile(
+          )*/,ListTile(
             leading: new Image.asset('assets/icons/ic_logout.png'),
             title: Text('Log Out'),
             selected: _selectedDestination == 9,

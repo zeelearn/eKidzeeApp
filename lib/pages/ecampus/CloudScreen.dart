@@ -1,15 +1,13 @@
 import 'package:ekidzee/api/request/digital_resouce_request.dart';
 import 'package:ekidzee/helper/LocalConstant.dart';
+import 'package:ekidzee/pages/ecampus/videoplayer_alt.dart';
 import 'package:ekidzee/pages/ecampus/widget/pdfviewer.dart';
-import 'package:ekidzee/pages/ecampus/widget/videoplayer.dart';
 import 'package:ekidzee/ui/app_helpers.dart';
-import 'package:ekidzee/utils/CustomAnimation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../api/APIService.dart';
-import '../../constants.dart';
 import '../../widget/file/path_bar.dart';
 import '../../widget/file_list_button.dart';
 import 'ecampus_view.dart';
@@ -51,11 +49,6 @@ class ECampusScreen extends StatefulWidget{
 }
 class _ECampusScreen extends State<ECampusScreen> {
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text('Digital Resource', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-    Text('Digital Support', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-    //Text('Profile Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-  ];
 
   final pages = [
     CloudScreen(supportIndex: "1"),
@@ -63,9 +56,17 @@ class _ECampusScreen extends State<ECampusScreen> {
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+
+    //print("selection ${index}");
+    _selectedIndex = index;
+    print("_selectedIndex ${_selectedIndex}");
+
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print('init state ${this._selectedIndex}');
   }
 
   @override
@@ -91,64 +92,16 @@ class _ECampusScreen extends State<ECampusScreen> {
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.black,
           iconSize: 40,
-          onTap: _onItemTapped,
+          onTap: (int index) {
+            print('onTap clicked ${index}');
+            setState((){
+              print('onTap inner clicked ${index}'); this._selectedIndex = index; }); },
           elevation: 5
       ),
     );
   }
 }
 
-
-
-class ECampusScreen12 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return  DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          backgroundColor: Colors.white,
-        appBar:  TabBar(
-          unselectedLabelColor: Colors.black12,
-          indicatorSize: TabBarIndicatorSize.label,
-          indicator: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              color: Colors.black12),
-            tabs: [
-              Tab(
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      border: Border.all(color: Colors.redAccent, width: 1)),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text("Digital Resourse"),
-                  ),
-                ),
-              ),
-              Tab(
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      border: Border.all(color: Colors.redAccent, width: 1)),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text("Virtual Connect"),
-                  ),
-                ),
-              )
-            ],
-          ),
-          body: TabBarView(
-            children: [
-              CloudScreen(supportIndex: "1"),
-              CloudScreen(supportIndex: "2",)
-            ],
-          ),
-        ),
-
-    );
-  }
-}
 class _CloudScreen extends State<CloudScreen> implements ECampusObservar{
   List<FileDetail> eCampusData = [];
   bool isApiCallProcess = false;
@@ -203,7 +156,7 @@ class _CloudScreen extends State<CloudScreen> implements ECampusObservar{
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => VideoApp(
+            builder: (context) => VideoApp1(
               fileDetails: data,
             )),
       );
@@ -339,10 +292,12 @@ class _CloudScreen extends State<CloudScreen> implements ECampusObservar{
   }
 
   Future<void> loadDigitalResource() async {
+    print("loadDigitalResource");
     eCampusData.clear();
     setState(() {
       _loadingInProgress = true;
     });
+    print("_selectedIndex is "+widget.supportIndex);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userId =  prefs.getString(LocalConstant.KEY_USER_ID)! ;
     DigitalResouceRequest request = DigitalResouceRequest(User_id: userId,

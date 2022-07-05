@@ -28,6 +28,13 @@ class Background extends StatelessWidget {
                 topImage,
                 width: 120,
               ),
+            ),Positioned(
+              top: 40,
+              left: 0,
+              child:new IconButton(
+                icon: new Icon(Icons.arrow_back_ios, color: Colors.grey),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
             ),
             // Positioned(
             //   bottom: 0,
