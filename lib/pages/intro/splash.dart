@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
       displayName = prefs.getString(LocalConstant.KEY_DISPLAY_NAME) as String;
     }
       print("-------${displayName}");
-      if(false && displayName != '') {
+      if(displayName != '') {
         print('home');
         Timer(
             Duration(seconds: 4),
