@@ -9,6 +9,7 @@ import 'package:ekidzee/pages/userinfo/MyInfoScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -702,8 +703,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   signOut() async{
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => SplashScreen()));
+    await Future.delayed(Duration(seconds: 2));
+
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    });
   }
 
   // Widget getTimeDateUI() {

@@ -92,7 +92,6 @@ class _ECampusScreen extends State<ECampusScreen> {
           selectedItemColor: Colors.black,
           iconSize: 40,
           onTap: (int index) {
-            print('onTap clicked ${index}');
             setState((){
               print('onTap inner clicked ${index}'); this._selectedIndex = index; }); },
           elevation: 5

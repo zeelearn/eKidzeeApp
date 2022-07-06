@@ -190,6 +190,7 @@ class _LoginFormState extends State<LoginForm> implements changePasswordInterfac
       Utility.showMessage(context, "Please accept the Terms and Conditions");
     }else if (userNameController.text.toString() != "" &&
         userPasswordController.text.toString() != "") {
+      Utility.showLoaderDialog(context);
       LoginRequestModel loginRequestModel = LoginRequestModel(
         User_Name: userNameController.text.toString(),
         User_Password: userPasswordController.text.toString(),
@@ -247,7 +248,7 @@ class _LoginFormState extends State<LoginForm> implements changePasswordInterfac
           KidzeePref().setString(LocalConstant.KEY_EMAILID,info?.emailId as String);
           KidzeePref().setString(LocalConstant.KEY_MOBILENO,info?.mobileNo as String);
 
-          print(info?.Msg);
+          Navigator.pop(context);
           if(info?.Msg =='ChangePassword'){
             _showChangePasswordBottomSheet(context);
           }else if(info?.Msg =='Login successful'){
@@ -268,6 +269,7 @@ class _LoginFormState extends State<LoginForm> implements changePasswordInterfac
           }
 
         } else {
+          Navigator.pop(context);
           Utility.showMessage(context, "Invalid User Name and Password");
           print("null value");
         }
