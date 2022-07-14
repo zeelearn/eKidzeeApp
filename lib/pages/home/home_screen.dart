@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ekidzee/helper/KidzeePref.dart';
 import 'package:ekidzee/helper/LocalConstant.dart';
@@ -306,19 +308,31 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.home),
+            leading: SizedBox(
+                height: 32.0,
+                width: 32.0,
+                child: Image.asset('assets/icons/ic_drawar_home.png')
+            ),
             title: Text('Home'),
             selected: _selectedDestination == 0,
             onTap: () => selectDestination(0),
           ),
           ListTile(
-            leading: Icon(Icons.verified_user),
+            leading: SizedBox(
+              height: 32.0,
+              width: 32.0,
+              child: Image.asset('assets/icons/ic_myinfo.png')
+            ),
             title: Text('My Info'),
             selected: _selectedDestination == 1,
             onTap: () => selectDestination(1),
           ),
           ListTile(
-            leading: Icon(Icons.favorite),
+            leading: SizedBox(
+                height: 32.0,
+                width: 32.0,
+                child: Image.asset('assets/icons/ic_ecampus.png')
+            ),
             title: Text('e-Campus'),
             selected: _selectedDestination == 2,
             onTap: () => selectDestination(2),
@@ -375,7 +389,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             selected: _selectedDestination == 8,
             onTap: () => selectDestination(8),
           )*/,ListTile(
-            leading: new Image.asset('assets/icons/ic_logout.png'),
+            leading: SizedBox(
+                height: 32.0,
+                width: 32.0,
+                child: Image.asset('assets/icons/ic_logout.png')
+            ),
             title: Text('Log Out'),
             selected: _selectedDestination == 9,
             onTap: () => signOut(),
@@ -704,10 +722,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
     await Future.delayed(Duration(seconds: 2));
-
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-    });
+    if(Platform.isAndroid) {
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      });
+    }else if (Platform.isIOS){
+      exit(0);
+    }
   }
 
   // Widget getTimeDateUI() {

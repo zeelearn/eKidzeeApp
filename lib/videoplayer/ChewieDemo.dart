@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:chewie/chewie.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:video_player/video_player.dart';
@@ -62,22 +61,8 @@ class _ChewieDemoState extends State<ChewieDemo> {
   }
 
   void _createChewieController() {
-    // final subtitles = [
-    //     Subtitle(
-    //       index: 0,
-    //       start: Duration.zero,
-    //       end: const Duration(seconds: 10),
-    //       text: 'Hello from subtitles',
-    //     ),
-    //     Subtitle(
-    //       index: 0,
-    //       start: const Duration(seconds: 10),
-    //       end: const Duration(seconds: 20),
-    //       text: 'Whats up? :)',
-    //     ),
-    //   ];
 
-    final subtitles = [
+    var  subtitles = [
       Subtitle(
         index: 0,
         start: Duration.zero,
@@ -85,17 +70,9 @@ class _ChewieDemoState extends State<ChewieDemo> {
         text: const TextSpan(
           children: [
             TextSpan(
-              text: 'Kidzee ',
+              text: '',
               style: TextStyle(color: Colors.red, fontSize: 22),
             ),
-            TextSpan(
-              text: '  ',
-              style: TextStyle(color: Colors.green, fontSize: 20),
-            ),
-            TextSpan(
-              text: '',
-              style: TextStyle(color: Colors.blue, fontSize: 18),
-            )
           ],
         ),
       ),
@@ -118,15 +95,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
       progressIndicatorDelay:
       bufferDelay != null ? Duration(milliseconds: bufferDelay!) : null,
 
-      additionalOptions: (context) {
-        return <OptionItem>[
-          OptionItem(
-            onTap: toggleVideo,
-            iconData: Icons.live_tv_sharp,
-            title: 'Toggle Video Src',
-          ),
-        ];
-      },
+
       subtitle: Subtitles(subtitles),
       subtitleBuilder: (context, dynamic subtitle) => Container(
         padding: const EdgeInsets.all(10.0),
@@ -174,7 +143,15 @@ class _ChewieDemoState extends State<ChewieDemo> {
         platform: _platform ?? Theme.of(context).platform,
       ),
       home: Scaffold(
-
+        appBar:  AppBar(
+          title: Text(''),// You can add title here
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back_ios, color: Colors.grey),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          backgroundColor: Colors.blue.withOpacity(0.3), //You can make this transparent
+          elevation: 0.0, //No shadow
+        ),
         body: Column(
           children: <Widget>[
             Expanded(
@@ -195,132 +172,6 @@ class _ChewieDemoState extends State<ChewieDemo> {
                 ),
               ),
             ),
-           /* TextButton(
-              onPressed: () {
-                _chewieController?.enterFullScreen();
-              },
-              child: const Text('Fullscreen'),
-            ),*/
-            /*Row(
-              children: <Widget>[
-                *//*Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        _videoPlayerController1.pause();
-                        _videoPlayerController1.seekTo(Duration.zero);
-                        _createChewieController();
-                      });
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      child: Text("Landscape Video"),
-                    ),
-                  ),
-                ),*//*
-                Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        _videoPlayerController2.pause();
-                        _videoPlayerController2.seekTo(Duration.zero);
-                        _chewieController = _chewieController!.copyWith(
-                          videoPlayerController: _videoPlayerController2,
-                          autoPlay: true,
-                          looping: true,
-                          *//* subtitle: Subtitles([
-                            Subtitle(
-                              index: 0,
-                              start: Duration.zero,
-                              end: const Duration(seconds: 10),
-                              text: 'Hello from subtitles',
-                            ),
-                            Subtitle(
-                              index: 0,
-                              start: const Duration(seconds: 10),
-                              end: const Duration(seconds: 20),
-                              text: 'Whats up? :)',
-                            ),
-                          ]),
-                          subtitleBuilder: (context, subtitle) => Container(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              subtitle,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ), *//*
-                        );
-                      });
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      child: Text("Portrait Video"),
-                    ),
-                  ),
-                )
-              ],
-            ),*/
-            /*Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        _platform = TargetPlatform.android;
-                      });
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      child: Text("Android controls"),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        _platform = TargetPlatform.iOS;
-                      });
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      child: Text("iOS controls"),
-                    ),
-                  ),
-                )
-              ],
-            ),*/
-            /*Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        _platform = TargetPlatform.windows;
-                      });
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      child: Text("Desktop controls"),
-                    ),
-                  ),
-                ),
-              ],
-            ),*/
-            /*if (Platform.isAndroid)
-              ListTile(
-                title: const Text("Delay"),
-                subtitle: DelaySlider(
-                  delay:
-                  _chewieController?.progressIndicatorDelay?.inMilliseconds,
-                  onSave: (delay) async {
-                    if (delay != null) {
-                      bufferDelay = delay == 0 ? null : delay;
-                      await initializePlayer();
-                    }
-                  },
-                ),
-              )*/
           ],
         ),
       ),

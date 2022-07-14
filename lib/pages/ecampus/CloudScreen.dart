@@ -3,10 +3,12 @@ import 'package:ekidzee/helper/LocalConstant.dart';
 import 'package:ekidzee/pages/ecampus/videoplayer_alt.dart';
 import 'package:ekidzee/pages/ecampus/widget/pdfviewer.dart';
 import 'package:ekidzee/ui/app_helpers.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../api/APIService.dart';
+import '../../videoplayer/ChewieDemo.dart';
 import '../../widget/file/path_bar.dart';
 import '../../widget/file_list_button.dart';
 import 'ecampus_view.dart';
@@ -154,8 +156,8 @@ class _CloudScreen extends State<CloudScreen> implements ECampusObservar{
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => VideoApp1(
-              fileDetails: data,
+            builder: (context) => ChewieDemo(
+              fileDetails: data,Title : data.supportName
             )),
       );
     }
