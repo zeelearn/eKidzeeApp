@@ -1,121 +1,11 @@
 import 'package:ekidzee/pages/intro/splash.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-import 'constants.dart';
-
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  print("Handling a background message: ${message.messageId}");
-}
-
-AndroidNotificationChannel? channel;
-
-FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
-late FirebaseMessaging messaging;
-
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
-// void main() => runApp(const MyApp());
-
-void main() async {
-  print('-- main');
-  if (!kIsWeb) {
-    WidgetsFlutterBinding.ensureInitialized();
-    print('-- WidgetsFlutterBinding.ensureInitialized');
-
-    await Firebase.initializeApp();
-    print('-- main: Firebase.initializeApp');
-  }
-  initFirebase();
+void main() {
+  //WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(const MyApp());
-}
-
-Future<void> initFirebase() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-// Pass all uncaught errors from the framework to Crashlytics.
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  if (kDebugMode) {
-    // Force disable Crashlytics collection while doing every day development.
-    // Temporarily toggle this to true if you want to test crash reporting in your app.
-    await FirebaseCrashlytics.instance
-        .setCrashlyticsCollectionEnabled(true);
-  } else {
-    // Handle Crashlytics enabled status when not in Debug,
-    // e.g. allow your users to opt-in to crash reporting.
-    // Pass all uncaught errors from the framework to Crashlytics.
-    FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-  }
-  messaging = FirebaseMessaging.instance;
-  messaging.subscribeToTopic("flutter-notification");
-
-  // Set the background messaging handler early on, as a named top-level function
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  if (!kIsWeb) {
-    channel = const AndroidNotificationChannel(
-        'flutter_notification', // id
-        'flutter_notification_title', // title
-        importance: Importance.high,
-        enableLights: true,
-        enableVibration: true,
-        showBadge: true,
-        playSound: true);
-
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    await flutterLocalNotificationsPlugin!
-        .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel!);
-
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      badge: true,
-      provisional: false,
-      sound: true,
-    );
-
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('User granted permission');
-      // TODO: handle the received notifications
-    } else {
-      print('User declined or has not accepted permission');
-    }
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
-      }
-    });
-  }
-  getToken();
-  //runApp(MyApp());
-}
-
-initFirebaseNotification() async{
-
-}
-
-late String token;
-getToken() async {
-  token = (await FirebaseMessaging.instance.getToken())!;
-  print(token);
 }
 
 class MyApp extends StatelessWidget {
@@ -125,33 +15,126 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Kidzee App',
+      title: 'Flutter Demo',
       theme: ThemeData(
-          primaryColor: kPrimaryLightColor,
-          scaffoldBackgroundColor: Colors.white,
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              elevation: 0,
-              primary: kPrimaryColor,
-              shape: const StadiumBorder(),
-              maximumSize: const Size(double.infinity, 56),
-              minimumSize: const Size(double.infinity, 56),
-            ),
-          ),
-          inputDecorationTheme: const InputDecorationTheme(
-            filled: true,
-            fillColor: kPrimaryTEXTBGColor,
-            iconColor: kPrimaryColor,
-            prefixIconColor: kPrimaryColor,
-            contentPadding: EdgeInsets.symmetric(
-                horizontal: defaultPadding, vertical: defaultPadding),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(30)),
-              borderSide: BorderSide.none,
-            ),
-          )),
+        // This is the theme of your application.
+        //
+        // Try running your application with "flutter run". You'll see the
+        // application has a blue toolbar. Then, without quitting the app, try
+        // changing the primarySwatch below to Colors.green and then invoke
+        // "hot reload" (press "r" in the console where you ran "flutter run",
+        // or simply save your changes to "hot reload" in a Flutter IDE).
+        // Notice that the counter didn't reset back to zero; the application
+        // is not restarted.
+        primarySwatch: Colors.blue,
+      ),
       home: const SplashScreen(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
+
+  // This widget is the home page of your application. It is stateful, meaning
+  // that it has a State object (defined below) that contains fields that affect
+  // how it looks.
+
+  // This class is the configuration for the state. It holds the values (in this
+  // case the title) provided by the parent (in this case the App widget) and
+  // used by the build method of the State. Fields in a Widget subclass are
+  // always marked "final".
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method below
+      // so that the display can reflect the updated values. If we changed
+      // _counter without calling setState(), then the build method would not be
+      // called again, and so nothing would appear to happen.
+      _counter++;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initialization();
+  }
+
+  void initialization() async {
+    // This is where you can initialize the resources needed by your app while
+    // the splash screen is displayed.  Remove the following example because
+    // delaying the user experience is a bad design practice!
+    // ignore_for_file: avoid_print
+    print('ready in 3...');
+    await Future.delayed(const Duration(seconds: 1));
+    print('ready in 2...');
+    await Future.delayed(const Duration(seconds: 1));
+    print('ready in 1...');
+    await Future.delayed(const Duration(seconds: 1));
+    print('go!');
+    FlutterNativeSplash.remove();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
+    return Scaffold(
+      appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text(widget.title),
+      ),
+      body: Center(
+        // Center is a layout widget. It takes a single child and positions it
+        // in the middle of the parent.
+        child: Column(
+          // Column is also a layout widget. It takes a list of children and
+          // arranges them vertically. By default, it sizes itself to fit its
+          // children horizontally, and tries to be as tall as its parent.
+          //
+          // Invoke "debug painting" (press "p" in the console, choose the
+          // "Toggle Debug Paint" action from the Flutter Inspector in Android
+          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+          // to see the wireframe for each widget.
+          //
+          // Column has various properties to control how it sizes itself and
+          // how it positions its children. Here we use mainAxisAlignment to
+          // center the children vertically; the main axis here is the vertical
+          // axis because Columns are vertical (the cross axis would be
+          // horizontal).
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
