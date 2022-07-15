@@ -96,40 +96,74 @@ class _LoginFormState extends State<LoginForm> implements changePasswordInterfac
               ),
             ),
           ),
-          Row(
-            children: [
-              Material(
-                child: Checkbox(
-                  value: isChecked,
-                  onChanged: (value) {
-                    //isChecked = value!;
-                    setState(() {
-                      isChecked = value!;
-                    });
+          Hero(
+            tag: "login_btn",
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Material(
+                  child: Checkbox(
+                    value: isChecked,
+                    onChanged: (value) {
+                      //isChecked = value!;
+                      setState(() {
+                        isChecked = value!;
+                      });
+                    },
+                  ),
+                ),GestureDetector(
+                  onTap: () {
+                    if (kIsWeb) {
+                      _launchURL();
+                    } else {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              PrivacyPolicyScreen()));
+                    }
                   },
-                ),
-              ),GestureDetector(
-                onTap: () {
-                  if (kIsWeb) {
-                    _launchURL();
-                  } else {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            PrivacyPolicyScreen()));
-                  }
-                },
-                child: const Expanded(
-                child: SizedBox(
-                    child: Text(
+                  child: Text(
                     'I have read and accept terms \nand conditions',
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
+          // Row(
+          //   children: [
+          //     Material(
+          //       child: Checkbox(
+          //         value: isChecked,
+          //         onChanged: (value) {
+          //           //isChecked = value!;
+          //           setState(() {
+          //             isChecked = value!;
+          //           });
+          //         },
+          //       ),
+          //     ),GestureDetector(
+          //       onTap: () {
+          //         if (kIsWeb) {
+          //           _launchURL();
+          //         } else {
+          //           Navigator.of(context).push(MaterialPageRoute(
+          //               builder: (BuildContext context) =>
+          //                   PrivacyPolicyScreen()));
+          //         }
+          //       },
+          //       child: const Expanded(
+          //       child: SizedBox(
+          //           child: Text(
+          //           'I have read and accept terms \nand conditions',
+          //           maxLines: 2,
+          //           overflow: TextOverflow.ellipsis,
+          //         ),
+          //       ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
           const SizedBox(height: defaultPadding),
           Hero(
             tag: "login_btn",

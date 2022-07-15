@@ -52,7 +52,7 @@ class MobileLoginScreen extends StatelessWidget {
           children:  [
             Spacer(),
             Expanded(
-              flex: 8,
+              flex: 4,
               child: LoginForm(),
             ),
             Spacer(),
