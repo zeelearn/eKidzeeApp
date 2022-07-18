@@ -1,8 +1,6 @@
 import 'package:ekidzee/pages/ecampus/CloudScreen.dart';
 import 'package:flutter/material.dart';
-import '../../constants.dart';
 import '../../widget/file_list_button.dart';
-import '../../widget/header_text.dart';
 
 class eCampusView extends StatelessWidget {
   const eCampusView({required this.data, Key? key, required this.observar}) : super(key: key);
@@ -10,6 +8,7 @@ class eCampusView extends StatelessWidget {
   final List<FileDetail> data;
   @override
   Widget build(BuildContext context) {
+    print('ecampus view');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

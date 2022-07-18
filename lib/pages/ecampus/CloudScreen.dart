@@ -1,9 +1,7 @@
 import 'package:ekidzee/api/request/digital_resouce_request.dart';
 import 'package:ekidzee/helper/LocalConstant.dart';
-import 'package:ekidzee/pages/ecampus/videoplayer_alt.dart';
 import 'package:ekidzee/pages/ecampus/widget/pdfviewer.dart';
 import 'package:ekidzee/ui/app_helpers.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
